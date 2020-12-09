@@ -47,6 +47,13 @@ Route::get(
         'as' => 'guests.show',
     ]
 );
+Route::post(
+    '/guests',
+    [
+        'uses' => 'GuestsController@store',
+        'as' => 'guests.store',
+    ]
+);
 
 
 /*
@@ -64,5 +71,19 @@ Route::get(
     [
         'uses' => 'ReservationsController@room',
         'as' => 'reservations.room.show',
+    ]
+);
+Route::post(
+    '/reservations/confirm',
+    [
+        'uses' => 'ReservationsController@setReservationConfirm',
+        'as' => 'reservations.confirm',
+    ]
+);
+Route::post(
+    '/reservations/completed',
+    [
+        'uses' => 'ReservationsController@setReservationCompleted',
+        'as' => 'reservations.completed',
     ]
 );

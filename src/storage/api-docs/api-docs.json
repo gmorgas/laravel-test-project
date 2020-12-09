@@ -63,6 +63,48 @@
                 "deprecated": false
             }
         },
+        "/api/guests": {
+            "post": {
+                "tags": [
+                    "guests.general"
+                ],
+                "summary": "Add new user as quest in hotel",
+                "description": "",
+                "operationId": "guests.store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/vnd.api+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GuestPOST"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/vnd.api+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuestGET"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Method not allowed"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "deprecated": false
+            }
+        },
         "/api/reservations/{reservationId}": {
             "get": {
                 "tags": [
@@ -149,6 +191,90 @@
                 "deprecated": false
             }
         },
+        "/api/reservations/confirm": {
+            "post": {
+                "tags": [
+                    "reservations.general"
+                ],
+                "summary": "Change the specific reservation's status into confirmed",
+                "description": "",
+                "operationId": "reservations.confirm",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/vnd.api+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReservationCONFIRM"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/vnd.api+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReservationGET"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Method not allowed"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/api/reservations/completed": {
+            "post": {
+                "tags": [
+                    "reservations.general"
+                ],
+                "summary": "Change the specific reservation's status into completed",
+                "description": "",
+                "operationId": "reservations.completed",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/vnd.api+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReservationCOMPLETED"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/vnd.api+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReservationGET"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Method not allowed"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "deprecated": false
+            }
+        },
         "/api/rooms/{roomId}": {
             "get": {
                 "tags": [
@@ -193,7 +319,7 @@
             }
         },
         "/api/rooms": {
-            "post": {
+            "patch": {
                 "tags": [
                     "rooms.general"
                 ],
@@ -342,6 +468,160 @@
                     "data": {
                         "type": "object",
                         "$ref": "#/components/schemas/GuestGETDataItem"
+                    }
+                },
+                "type": "object"
+            },
+            "GuestPOSTAttributes": {
+                "required": [
+                    "id_number",
+                    "first_name",
+                    "last_name",
+                    "city",
+                    "country"
+                ],
+                "properties": {
+                    "id_number": {
+                        "description": "Id number unique",
+                        "type": "string",
+                        "maxLength": 30,
+                        "example": "ACT456999"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Grzegorz"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Grzegorz"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 100,
+                        "example": "gmail@gmail.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 30,
+                        "example": "+4851051061"
+                    },
+                    "city": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Warszawa"
+                    },
+                    "country": {
+                        "type": "string",
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "example": "PL"
+                    }
+                },
+                "type": "object"
+            },
+            "GuestPOSTDataItem": {
+                "required": [
+                    "type",
+                    "attributes"
+                ],
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "example": "guest"
+                    },
+                    "attributes": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/GuestPOSTAttributes"
+                    }
+                },
+                "type": "object"
+            },
+            "GuestPOST": {
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/GuestPOSTDataItem"
+                    }
+                },
+                "type": "object"
+            },
+            "ReservationCOMPLETEDDataItem": {
+                "required": [
+                    "type",
+                    "id"
+                ],
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "example": "reservation"
+                    },
+                    "id": {
+                        "type": "int",
+                        "example": "4"
+                    }
+                },
+                "type": "object"
+            },
+            "ReservationCOMPLETED": {
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/ReservationCOMPLETEDDataItem"
+                    }
+                },
+                "type": "object"
+            },
+            "ReservationCONFIRMAttributes": {
+                "required": [
+                    "room_id"
+                ],
+                "properties": {
+                    "room_id": {
+                        "type": "int",
+                        "example": "6"
+                    }
+                },
+                "type": "object"
+            },
+            "ReservationCONFIRMDataItem": {
+                "required": [
+                    "type",
+                    "attributes",
+                    "id"
+                ],
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "example": "reservation"
+                    },
+                    "attributes": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/ReservationCONFIRMAttributes"
+                    },
+                    "id": {
+                        "type": "int",
+                        "example": "4"
+                    }
+                },
+                "type": "object"
+            },
+            "ReservationCONFIRM": {
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/ReservationCONFIRMDataItem"
                     }
                 },
                 "type": "object"

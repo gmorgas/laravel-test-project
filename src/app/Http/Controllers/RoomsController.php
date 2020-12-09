@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoomsStoreRequest;
 use App\Http\Resources\RoomResource;
 use App\Room;
 use Illuminate\Http\Request;
@@ -54,7 +55,7 @@ class RoomsController extends Controller
     }
 
     /**
-     * @OA\Post(
+     * @OA\Patch(
      *     path="/api/rooms",
      *     tags={"rooms.general"},
      *     summary="Create new room.",
@@ -89,7 +90,7 @@ class RoomsController extends Controller
      * @param Request $request
      * @return RoomResource
      */
-    public function store(Request $request): RoomResource
+    public function store(RoomsStoreRequest $request): RoomResource
     {
         $room = new Room($request->json('data.attributes'));
         $room->save();
